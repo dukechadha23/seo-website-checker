@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free SEO Website Checker | Duke Chadha</title>
+<meta name="description" content="Free SEO website checker to analyze title tags, meta descriptions, headings, canonical URLs, image alt text, robots.txt and sitemap.xml.">
+<meta name="robots" content="index,follow">
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#152033;--muted:#667085;--border:#e4e7ec;--blue:#2563eb;--green:#15803d;--amber:#b45309;--red:#dc2626}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:linear-gradient(180deg,#eef4ff 0,#f8fafc 360px,var(--bg) 100%);line-height:1.55}.container{width:min(1080px,92%);margin:auto}
+header{text-align:center;padding:55px 0 30px}.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:7px 13px;font-size:13px;font-weight:800;margin-bottom:15px}h1{font-size:clamp(36px,6vw,58px);line-height:1.05;letter-spacing:-2px;margin:0 0 16px}.hero{max-width:720px;margin:auto;color:var(--muted);font-size:18px}
+.box,.score,.overview,.item{background:var(--card);border:1px solid var(--border);box-shadow:0 14px 40px rgba(15,23,42,.07);border-radius:18px}.box{padding:24px;margin:20px 0 28px}.form{display:flex;gap:12px}input{flex:1;min-width:0;padding:16px;border:1px solid #cfd5df;border-radius:12px;font-size:16px;outline:0}input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}button{border:0;border-radius:12px;background:var(--blue);color:#fff;font-weight:800;font-size:16px;padding:0 25px;cursor:pointer}button:hover{background:#1d4ed8}button:disabled{opacity:.65;cursor:wait}.hint{font-size:13px;color:var(--muted);margin-top:10px}.message{display:none;margin-top:14px;padding:13px 15px;border-radius:10px}.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}.info{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+.results{display:none}.summary{display:grid;grid-template-columns:220px 1fr;gap:20px;margin-bottom:20px}.score,.overview{padding:24px}.score{text-align:center}.num{font-size:64px;font-weight:900;line-height:1}.good{color:var(--green)}.mid{color:var(--amber)}.bad{color:var(--red)}.score small{color:var(--muted)}.overview h2{margin-top:0}.overview p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.item{padding:18px;box-shadow:none}.top{display:flex;align-items:center;justify-content:space-between;gap:10px}.item h3{font-size:16px;margin:0}.status{font-size:11px;font-weight:900;padding:5px 9px;border-radius:999px}.pass{background:#dcfce7;color:#166534}.warn{background:#fef3c7;color:#92400e}.fail{background:#fee2e2;color:#991b1b}.detail{font-size:14px;color:var(--muted);margin:9px 0 0;word-break:break-word}
+.cta{margin:25px 0 50px;background:#0f172a;color:#fff;padding:28px;border-radius:18px;text-align:center}.cta p{color:#cbd5e1}.cta a{display:inline-block;background:#fff;color:#0f172a;text-decoration:none;padding:11px 17px;border-radius:10px;font-weight:800;margin:3px}.cta a.whatsapp{background:#dcfce7}
+footer{text-align:center;color:var(--muted);font-size:13px;padding-bottom:35px}
+@media(max-width:700px){.form{flex-direction:column}button{height:52px}.summary,.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="container">
+<span class="badge">FREE SEO TOOL</span>
+<h1>SEO Website Checker</h1>
+<p class="hero">Check important on-page and technical SEO factors and quickly identify opportunities to improve search visibility.</p>
+</header>
+
+<main class="container">
+<section class="box">
+<div class="form">
+<input id="url" type="url" placeholder="https://example.com" autocomplete="url">
+<button id="btn">Check Website</button>
+</div>
+<div class="hint">Enter a public website URL. The checker uses a browser-safe fallback when a website blocks direct requests.</div>
+<div id="msg" class="message"></div>
+</section>
+
+<section id="results" class="results">
+<div class="summary">
+<div class="score"><div id="score" class="num">--</div><small>SEO Health Score / 100</small></div>
+<div class="overview"><h2 id="title">Analysis complete</h2><p id="summary"></p></div>
+</div>
+<div id="grid" class="grid"></div>
+<div class="cta">
+<h2>Want a professional SEO audit?</h2>
+<p>Get a practical SEO review, technical recommendations and an action plan for your website.</p>
+<a href="https://dukechadha23.github.io/portfolio/" target="_blank" rel="noopener">View SEO Services</a>
+<a class="whatsapp" href="https://wa.me/?text=Hi%20Duke%2C%20I%20need%20an%20SEO%20audit%20for%20my%20website." target="_blank" rel="noopener">Request SEO Audit</a>
+</div>
+</section>
+</main>
+<footer class="container">Built by Duke Chadha</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function urlObj(v){v=v.trim();if(!/^https?:\/\//i.test(v))v="https://"+v;try{return new URL(v)}catch{return null}}
+function result(name,status,detail){
+ const label=status==="pass"?"PASS":status==="warn"?"WARNING":"ISSUE";
+ $("grid").insertAdjacentHTML("beforeend",`<article class="item"><div class="top"><h3>${esc(name)}</h3><span class="status ${status}">${label}</span></div><p class="detail">${esc(detail)}</p></article>`);
+}
+async function getPage(url){
+ // Try direct request first.
+ try{
+   const r=await fetch(url.href,{mode:"cors",redirect:"follow"});
+   if(r.ok){return {html:await r.text(),method:"direct"}}
+ }catch(e){}
+ // Browser-safe public fallback. This is only used when direct CORS access is unavailable.
+ const proxy="https://api.allorigins.win/raw?url="+encodeURIComponent(url.href);
+ const r=await fetch(proxy,{redirect:"follow"});
+ if(!r.ok)throw new Error("Unable to fetch the page.");
+ return {html:await r.text(),method:"proxy"};
+}
+async function check(){
+ const u=urlObj($("url").value);
+ $("msg").style.display="none";$("results").style.display="none";$("grid").innerHTML="";
+ if(!u){$("msg").textContent="Please enter a valid website URL, for example https://example.com";$("msg").className="message error";$("msg").style.display="block";return}
+ $("btn").disabled=true;$("btn").textContent="Checking...";
+ try{
+   const page=await getPage(u);
+   const doc=new DOMParser().parseFromString(page.html,"text/html");
+   let score=0,total=100;
+   const add=(condition,points)=>{if(condition)score+=points};
+   add(u.protocol==="https:",10);
+   result("HTTPS",u.protocol==="https:"?"pass":"fail",u.protocol==="https:"?"The website uses HTTPS.":"The website is not using HTTPS.");
+   const title=doc.querySelector("title")?.textContent.trim()||"";
+   const titleOK=title.length>=10&&title.length<=60;add(titleOK,15);
+   result("Title Tag",titleOK?"pass":title?"warn":"fail",title?`Found: "${title}" (${title.length} characters).`:"No title tag was found.");
+   const desc=doc.querySelector('meta[name="description"]')?.getAttribute("content")?.trim()||"";
+   const descOK=desc.length>=50&&desc.length<=160;add(descOK,15);
+   result("Meta Description",descOK?"pass":desc?"warn":"fail",desc?`Found (${desc.length} characters).`:"No meta description was found.");
+   const h1=doc.querySelectorAll("h1").length;add(h1===1,15);
+   result("H1 Heading",h1===1?"pass":h1>1?"warn":"fail",`Found ${h1} H1 heading(s).`);
+   const canon=doc.querySelector('link[rel="canonical"]')?.getAttribute("href")||"";add(!!canon,10);
+   result("Canonical URL",canon?"pass":"warn",canon?`Canonical found: ${canon}`:"No canonical tag was found.");
+   const imgs=[...doc.images],missing=imgs.filter(x=>!x.hasAttribute("alt")).length;add(!missing,10);
+   result("Image Alt Text",missing===0?"pass":"warn",imgs.length?`${missing} of ${imgs.length} image(s) are missing an alt attribute.`:"No images were detected.");
+   const hs=[...doc.querySelectorAll("h1,h2,h3,h4,h5,h6")];let skip=false;
+   for(let i=1;i<hs.length;i++){if(Number(hs[i].tagName[1])-Number(hs[i-1].tagName[1])>1){skip=true;break}}
+   add(!skip,5);result("Heading Structure",skip?"warn":"pass",skip?"Heading levels appear to skip a level.":"No obvious heading-level skips were detected.");
+   let robots=false,sitemap=false;
+   try{const r=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent(new URL("/robots.txt",u.origin).href));robots=r.ok}catch{}
+   try{const s=await fetch("https://api.allorigins.win/raw?url="+encodeURIComponent(new URL("/sitemap.xml",u.origin).href));sitemap=s.ok}catch{}
+   add(robots,5);result("robots.txt",robots?"pass":"warn",robots?"robots.txt is reachable.":"robots.txt could not be confirmed.");
+   add(sitemap,5);result("XML Sitemap",sitemap?"pass":"warn",sitemap?"sitemap.xml is reachable.":"sitemap.xml could not be confirmed.");
+   $("score").textContent=score;
+   $("score").className="num "+(score>=80?"good":score>=60?"mid":"bad");
+   $("title").textContent=score>=80?"Strong SEO foundation":score>=60?"Some SEO improvements are needed":"Several SEO opportunities were found";
+   $("summary").textContent=`We analyzed ${u.hostname}. ${page.method==="proxy"?"Direct browser access was blocked, so the checker used a fallback fetch service. ":""}Prioritize the items marked WARNING or ISSUE.`;
+   $("results").style.display="block";
+ }catch(e){
+   $("msg").innerHTML="This website could not be fetched for analysis. It may block automated requests or the fallback service may be unavailable. Try another public URL.";
+   $("msg").className="message error";$("msg").style.display="block";
+ }finally{$("btn").disabled=false;$("btn").textContent="Check Website"}
+}
+$("btn").addEventListener("click",check);
+$("url").addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+</script>
+</body>
+</html>
